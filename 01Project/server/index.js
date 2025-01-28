@@ -44,6 +44,14 @@ io.on("connection", (socket) => {
     socket.to(socketId).emit('user-called', {email: fromEmail, offer: data?.offer});
   })
 
+
+  socket.on('accept-call', (data)=>{
+    console.log("answer got for user", data?.email);
+    const socketId = EmailToSocket.get(data?.email);
+    const fromEmail = SocketToEmail.get(socket.id);
+    socket.to(socketId).emit('call-accepted', {answer: data?.answer, email: fromEmail});
+  })
+
 });
 
 io.listen(3000);
