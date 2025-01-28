@@ -1,8 +1,31 @@
-import React from "react";
+import React, {useMemo} from "react";
 
-const PeerContext = React.createContext();
+const PeerContext = React.createContext(null);
+
+export const usePeer = () => React.useContext(PeerContext);
 
 
 export const PeerProvider = ({ children }) => {
-    return <PeerContext.Provider value={{}}>{children}</PeerContext.Provider>;
+    const peer = useMemo(()=> 
+        new RTCPeerConnection({
+            iceServers: [
+                {
+                    urls: [
+                        "stun:stun.l.google.com:19302",
+                        "stun:global.stun.twilio.com:3478"
+                    ]
+                }
+            ]
+        })
+    );
+
+    const CreateOffer = async () => {
+        const offer = peer.createOffer();
+        await peer.setLocalDescription(offer);
+        return offer;
+    }
+
+    return <PeerContext.Provider value={{peer, CreateOffer}}>
+        {children}
+        </PeerContext.Provider>;
 };
