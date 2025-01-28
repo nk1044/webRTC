@@ -1,3 +1,7 @@
+import { Routes, Route } from 'react-router-dom';
+import { SocketProvider } from './Providers/Socket';
+import Home from './Pages/Home';
+import Room from './Pages/Room';
 
 
 function App() {
@@ -5,7 +9,12 @@ function App() {
 
   return (
     <>
-      <h1 className="text-3xl text-center font-bold">webrtc</h1>
+      <SocketProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/room/:id" element={<Room />} />
+        </Routes>
+      </SocketProvider>
     </>
   )
 }
