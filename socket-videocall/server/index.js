@@ -1,16 +1,11 @@
-import express from 'express';
-import io from './app.js';
+import { app, server } from './app.js';  // Import the express app and server
 
-const app = express();
-
-app.get('/', (req, res)=>{
+// Define a simple route to check the server
+app.get('/', (req, res) => {
     res.send('Hello World');
-})
-
-app.listen(8000, ()=>{
-    console.log('Server is running on port 3000');
 });
 
-io.listen(3000, ()=>{
-    console.log('Server is running on port 3000');
+// Start the server listening on port 8000
+server.listen(8000, () => {
+    console.log('Server is running on port 8000');
 });

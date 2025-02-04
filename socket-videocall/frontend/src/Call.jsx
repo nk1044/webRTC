@@ -1,4 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect , useCallback} from 'react';
+import { io } from "socket.io-client";
+export const socket = io('http://localhost:8000');
+
 
 function Call({ roomId, userId }) {
   const [localStream, setLocalStream] = useState(null);
@@ -8,6 +11,18 @@ function Call({ roomId, userId }) {
 
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
+
+  const JoinRoom = useCallback(({ roomId, userId }) => {
+    socket.emit('join room', { roomId, userId});
+  }, []);
+
+  useEffect(() => {
+    navigator.mediaDevices.getUserMedia({ video: video, audio: audio }).then((stream) => {
+      setLocalStream(stream);
+    }).catch((err) => {
+      console.error('getUserMedia Error: ', err);
+    });
+  }, []);
 
   useEffect(() => {
     if (localStream) {
