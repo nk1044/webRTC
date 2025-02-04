@@ -54,5 +54,15 @@ io.on('connection', (socket) => {
         console.log(`Message from ${userId} in room ${roomId}: ${message}`);
         socket.to(roomId).emit('receive-message', { userId, message });
     });
+
+    socket.on('send-stream', (data) => {
+        const { roomId, userId, stream } = data;
+
+        if (!roomId || !userId || !stream) {
+            console.error('Invalid data received for sending stream:', data);
+            return;
+        }
+        socket.to(roomId).emit('receive-stream', { userId, stream });
+    });
 });
 
