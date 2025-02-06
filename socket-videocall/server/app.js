@@ -34,16 +34,17 @@ io.on('connection', (socket) => {
     socket.on('join-room', (data) => {
         const roomId = data?.roomId;
         const userId = data?.userId;
-
+    
         if (!roomId || !userId) {
             console.error('Invalid data received for joining room:', data);
             return;
         }
-
+    
         console.log(`User ${userId} joined room: ${roomId}`);
         socket.join(roomId);
-        socket.to(roomId).emit('user-connected', userId);
+        socket.to(roomId).emit('user-connected', { userId });
     });
+    
 
     socket.on('send-message', (data)=>{
         const { roomId, userId, message } = data;
@@ -54,6 +55,18 @@ io.on('connection', (socket) => {
         console.log(`Message from ${userId} in room ${roomId}: ${message}`);
         socket.to(roomId).emit('receive-message', { userId, message });
     });
+
+    socket.on("offer", ({ roomId, offer }) => {
+        socket.to(roomId).emit("offer", { offer });
+      });
+    
+      socket.on("answer", ({ roomId, answer }) => {
+        socket.to(roomId).emit("answer", { answer });
+      });
+    
+      socket.on("ice-candidate", ({ roomId, candidate }) => {
+        socket.to(roomId).emit("ice-candidate", { candidate });
+      });
 
     socket.on('send-stream', (data) => {
         const { roomId, userId, stream } = data;
