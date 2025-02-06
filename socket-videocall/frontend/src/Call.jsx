@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:8000");
+const socket = io(String(import.meta.env.VITE_BACKEND_URI));
 
 function Call({ roomId, userId }) {
   const [localStream, setLocalStream] = useState(null);
