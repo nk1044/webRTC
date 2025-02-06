@@ -6,8 +6,8 @@ COPY package*.json /app
 
 RUN npm install
 
-COPY app.js /app/app.js
 COPY index.js /app/index.js
+COPY app.js /app/app.js
 
 EXPOSE 8000
 

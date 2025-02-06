@@ -11,14 +11,14 @@ export const server = http.createServer(app);
 
 // Apply CORS middleware
 app.use(cors({
-    origin: "http://localhost:5173",  // Adjust origin as needed
+    origin: "*",  // Adjust origin as needed
     credentials: true
 }));
 
 // Create a socket.io server attached to the HTTP server
 export const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",  // Allow your frontend
+        origin: "*",  // Allow your frontend
         credentials: true
     }
 });
