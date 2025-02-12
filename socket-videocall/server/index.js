@@ -5,10 +5,19 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
+async function callWakupServer() {
+    try {
+        await fetch('https://wakeup-server:01.onrender.com/health-check');
+    } catch (error) {
+        console.log('Error in wakup server', error);
+        
+    }
+};
+
 // Define a simple route to check the server
 app.get('/health-check', (req, res) => {
     try {
-        const response = fetch('https://wakeup-server:01.onrender.com/health-check');
+        callWakupServer();
     } catch (error) {
         console.log('Error in health-check of wakup server', error);
     }
