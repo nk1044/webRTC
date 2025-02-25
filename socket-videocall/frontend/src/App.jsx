@@ -17,20 +17,7 @@ function App() {
 
   return (
     <div className="h-screen w-full flex flex-col justify-center items-center bg-gray-900 text-white">
-      {/* "Join Another Room" Button (Always Visible) */}
-      {page === 'call' && (
-        <div className="absolute top-4 right-4">
-        <button
-          onClick={() => setPage('home')}
-          className="p-2 px-4 bg-green-500 hover:bg-green-600 transition duration-200 text-white font-semibold rounded-lg shadow-md"
-        >
-          Join another room
-        </button>
-      </div>
-      )}
-
-      <h1 className="text-3xl font-bold mt-6">Socket Video Call</h1>
-
+ 
       {page === 'home' ? (
         <div className="flex flex-col items-center gap-4 p-6 border border-gray-700 rounded-xl shadow-lg bg-gray-800 mt-4">
           <input
