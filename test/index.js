@@ -1,6 +1,7 @@
 import 'dotenv/config';
-import {server, app} from './app.js';
-import {Print} from '../server-peer/dist/index.js';
+import {app, server} from './app.js';
+import {ConnectPeer} from '../server-peer/dist/index.js';
+
 
 const port = process.env.PORT || 8002;
 
@@ -8,8 +9,8 @@ app.get('/', (req, res) => {
     res.send('Server is running');
 });
 
-server.listen(port, () => {
-    Print();
-  console.log(`Server is running on port ${process.env.PORT}`);
-});
+const peer = new ConnectPeer(app, server);
 
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
