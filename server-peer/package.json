@@ -5,18 +5,23 @@
   "author": "Your Name",
   "license": "MIT",
   "type": "module",
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts",
-    "dev": "tsup src/index.ts --watch"
+    "dev": "tsup src/index.ts --format esm,cjs --watch",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "cors": "^2.8.5",
