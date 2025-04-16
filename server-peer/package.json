@@ -1,24 +1,43 @@
 {
   "name": "server-peer",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "A JavaScript library built with TypeScript for real-time communication using Socket.IO and Express.",
+  "author": "Your Name",
+  "license": "MIT",
   "type": "module",
-  "scripts": {
-    "start": "nodemon",
-    "build": "tsc -b"
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsup src/index.ts --watch"
+  },
   "dependencies": {
-    "express": "^5.1.0"
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
-    "nodemon": "^3.1.9",
+    "@types/socket.io": "^3.0.1",
     "ts-node": "^10.9.2",
+    "tsup": "^8.4.0",
     "typescript": "^5.8.3"
-  }
+  },
+  "keywords": [
+    "typescript",
+    "socket.io",
+    "express",
+    "realtime",
+    "websockets",
+    "library"
+  ]
 }
