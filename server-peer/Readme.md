@@ -53,3 +53,7 @@ npx tsc --init
 ```
 
 voidcall
+
+
+npm login
+npm publish --access public
