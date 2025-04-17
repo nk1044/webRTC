@@ -1,5 +1,6 @@
 import http from 'http';
 import { Server } from 'socket.io';
+import {OfferPayload, AnswerPayload, IceCandidatePayload} from './Interfaces'
 
 class ConnectPeer {
   private io!: Server;
@@ -23,15 +24,15 @@ class ConnectPeer {
       });
 
       // video call starts
-      socket.on("offer", ({ roomId, offer }) => {
+      socket.on("offer", ({ roomId, offer }:OfferPayload) => {
         socket.to(roomId).emit("offer", { offer });
       });
 
-      socket.on("answer", ({ roomId, answer }) => {
+      socket.on("answer", ({ roomId, answer }:AnswerPayload) => {
         socket.to(roomId).emit("answer", { answer });
       }); 
 
-      socket.on("ice-candidate", ({ roomId, candidate }) => {
+      socket.on("ice-candidate", ({ roomId, candidate }:IceCandidatePayload) => {
         socket.to(roomId).emit("ice-candidate", { candidate });
       });
       // video call ends
