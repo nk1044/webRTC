@@ -1,6 +1,11 @@
 import http from 'http';
 import { Server } from 'socket.io';
-import {OfferPayload, AnswerPayload, IceCandidatePayload} from './Interfaces'
+import {
+  OfferPayload, 
+  AnswerPayload, 
+  IceCandidatePayload, 
+  JoinChatRoomPayload
+} from './Interfaces'
 
 class ConnectPeer {
   private io!: Server;
@@ -36,6 +41,21 @@ class ConnectPeer {
         socket.to(roomId).emit("ice-candidate", { candidate });
       });
       // video call ends
+
+
+      // chat starts
+      socket.on("join-chat-room", ({ roomId, userId }:JoinChatRoomPayload) => {
+        socket.join(roomId);
+        console.log(`User joined room: ${roomId}`);
+        socket.to(roomId).emit("chat-message-system", {
+          message: "A new user has joined the chat",
+          userJoined: userId,
+        });
+
+
+      });
+
+      // chat ends
 
     });
   }

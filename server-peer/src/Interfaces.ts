@@ -14,8 +14,14 @@ interface IceCandidatePayload {
     candidate: RTCIceCandidateInit;
 }
 
+interface JoinChatRoomPayload {
+    roomId: string;
+    userId: string;
+}
+
 export {
     OfferPayload,
     AnswerPayload,
-    IceCandidatePayload
+    IceCandidatePayload,
+    JoinChatRoomPayload
 }
