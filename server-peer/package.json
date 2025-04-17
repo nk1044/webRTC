@@ -24,16 +24,15 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@types/ws": "^8.18.1",
+    "@types/socket.io": "^3.0.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "ws": "^8.18.1"
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
-    "@types/socket.io": "^3.0.1",
     "ts-node": "^10.9.2",
     "tsup": "^8.4.0",
     "typescript": "^5.8.3"

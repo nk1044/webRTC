@@ -9,7 +9,8 @@ app.get('/', (req, res) => {
     res.send('Server is running');
 });
 
-const peer = new ConnectPeer(app, server);
+const peer = new ConnectPeer(server);
+peer.connect();
 
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);

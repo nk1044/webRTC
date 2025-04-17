@@ -1,91 +1,27 @@
 import http from 'http';
-import { Express } from 'express';
-import { WebSocketServer, WebSocket } from 'ws';
+import { Server } from 'socket.io';
 
 class ConnectPeer {
-  private wss: WebSocketServer;
+  private io!: Server;
+  private server: http.Server;
 
-  constructor(app: Express, server?: http.Server) {
-    let httpServer: http.Server;
+  constructor(server: http.Server) {
+    this.server = server;
+  }
 
-    if (server) {
-      httpServer = server;
-    } else {
-      const existingServer = this.getServerFromExpressApp(app);
-      if (existingServer) {
-        httpServer = existingServer;
-      } else {
-        httpServer = http.createServer(app);
-      }
-    }
-
-    this.wss = new WebSocketServer({ server: httpServer });
-
-    this.wss.on('connection', (ws: WebSocket) => {
-      console.log('A user connected');
-
-      ws.on('message', (message: string) => {
-        let parsed;
-        try {
-          parsed = JSON.parse(message);
-        } catch {
-          return console.error('Invalid JSON');
-        }
-
-        const { type, data } = parsed;
-
-        switch (type) {
-          case 'chat message':
-            console.log('message:', data);
-            this.broadcast(JSON.stringify({ type: 'chat message', data }));
-            break;
-
-          case 'typing':
-            this.broadcastExceptSender(ws, JSON.stringify({ type: 'typing', data }));
-            break;
-
-          case 'stop typing':
-            this.broadcastExceptSender(ws, JSON.stringify({ type: 'stop typing', data }));
-            break;
-
-          default:
-            console.log('Unknown message type:', type);
-        }
-      });
-
-      ws.on('close', () => {
-        console.log('User disconnected');
+  public async connect() {
+    this.io = new Server(this.server, {
+      cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
+      },
+    });
+    this.io.on('connection', (socket) => {
+      console.log('a user connected, inside library');
+      socket.on('disconnect', () => {
+        console.log('user disconnected, inside library');
       });
     });
-
-    console.log('ConnectPeer initialized with WebSocket');
-  }
-
-  private broadcast(message: string) {
-    this.wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(message);
-      }
-    });
-  }
-
-  private broadcastExceptSender(sender: WebSocket, message: string) {
-    this.wss.clients.forEach((client) => {
-      if (client !== sender && client.readyState === WebSocket.OPEN) {
-        client.send(message);
-      }
-    });
-  }
-
-  private getServerFromExpressApp(app: Express): http.Server | null {
-    if ((app as any)._server) {
-      return (app as any)._server;
-    }
-    return null;
-  }
-
-  getWSS(): WebSocketServer {
-    return this.wss;
   }
 }
 
